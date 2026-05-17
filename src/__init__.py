@@ -1,0 +1,1 @@
+"""AdaptInsure platform package."""

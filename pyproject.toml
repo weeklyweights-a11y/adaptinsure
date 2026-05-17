@@ -1,0 +1,16 @@
+[project]
+name = "adaptinsure"
+version = "0.1.0"
+description = "AI-powered insurance claims adapter platform"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

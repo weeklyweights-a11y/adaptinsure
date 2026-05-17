@@ -1,0 +1,249 @@
+# ============================================================================
+# ADAPT-INSURANCE — CURSOR RULES
+# ============================================================================
+# Project: AdaptInsure — AI-Powered Insurance Adapter Platform
+# Stack: Python 3.12 | FastAPI | Gemini API | Pydantic v2 | Jinja2 | pytest
+# Author: Bhargavi | Weekly Weights
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# EXECUTION PROTOCOL
+# ---------------------------------------------------------------------------
+# You are a senior engineer building a production-grade platform.
+#
+# Before writing ANY code:
+# 1. Read PROJECT.md to understand the full system
+# 2. Read TASKS.md to know what phase you are on
+# 3. Read the current phase spec (docs/PHASE_X_SPEC.md) — this is your scope
+# 4. State what you are about to do and why
+# 5. Plan the approach — list files you will touch and what changes
+# 6. Wait for approval before writing code
+#
+# Rules:
+# - One task at a time. Complete it, test it, commit it. Then move on.
+# - Phase specs are the source of truth. Build what the spec says. Nothing more.
+# - If the spec says don't build it, don't build it.
+# - If something is ambiguous, ask. Don't guess.
+# - If you break something, revert and redo. Don't patch on top of broken code.
+# - Every function has a docstring. Every module has a module docstring.
+# - No commented-out code in commits. Delete it or keep it.
+
+# ---------------------------------------------------------------------------
+# PYTHON STANDARDS
+# ---------------------------------------------------------------------------
+# - Python 3.12. Use modern syntax (match/case, type unions with |, etc.)
+# - Type hints on EVERY function signature. No exceptions.
+# - Pydantic v2 for all data models. model_validator, field_validator.
+# - Use pathlib.Path, not os.path.
+# - Use f-strings, not .format() or %.
+# - Use logging, not print. Configure once in config.py.
+# - Use async/await for IO-bound operations (API calls, file reads).
+# - Imports: stdlib first, third-party second, local third. Blank line between groups.
+# - Functions under 50 lines. If longer, split.
+# - Files under 300 lines. If longer, split.
+# - No wildcard imports. No circular imports.
+# - All amounts use Decimal, never float. Insurance requires precision.
+# - All dates use datetime with timezone awareness (UTC).
+# - Enums use StrEnum for JSON serialization.
+
+# ---------------------------------------------------------------------------
+# PYDANTIC RULES
+# ---------------------------------------------------------------------------
+# - All models inherit from BaseModel with model_config = ConfigDict(strict=True)
+# - Use Annotated types with Field() for descriptions and constraints
+# - field_validator for single-field validation
+# - model_validator(mode="after") for cross-field validation
+# - All optional fields explicitly typed as T | None = None
+# - No dict[str, Any] unless it's raw_data passthrough — type everything else
+
+# ---------------------------------------------------------------------------
+# FASTAPI RULES
+# ---------------------------------------------------------------------------
+# - All endpoints prefixed with /api/v1/
+# - Success (single): { "data": { ... } }
+# - Success (list): { "data": [...] }
+# - Error: { "detail": "Human-readable message" }
+# - Proper HTTP status codes (201 for creation, 422 for validation, etc.)
+# - Dependency injection for shared services
+# - All request/response bodies are Pydantic models — no raw dicts
+
+# ---------------------------------------------------------------------------
+# LLM INTEGRATION RULES
+# ---------------------------------------------------------------------------
+# - All LLM calls go through a single client wrapper in src/llm/client.py (Google Gemini via google-genai)
+# - Every LLM call has: system prompt, user prompt, expected output schema
+# - Every LLM response is validated against a Pydantic model before use
+# - If LLM output fails validation, retry once with error feedback, then raise
+# - LLM calls are async
+# - Log every LLM call: prompt hash, token count, latency, success/failure
+# - Never let LLM write production code. LLM outputs configs. Templates write code.
+# - Temperature 0.0 for schema mapping. Temperature 0.2 for edge case generation.
+
+# ---------------------------------------------------------------------------
+# TEMPLATE / CODE GENERATION RULES
+# ---------------------------------------------------------------------------
+# - Jinja2 templates live in src/generator/templates/
+# - Templates produce valid Python that passes ruff and mypy
+# - Generated code goes to generated/ directory
+# - Generated code is never edited by hand — regenerate from config
+# - Every generated adapter has a header comment: "AUTO-GENERATED — DO NOT EDIT"
+# - Generated test files follow pytest conventions
+
+# ---------------------------------------------------------------------------
+# TESTING RULES
+# ---------------------------------------------------------------------------
+# - pytest for everything
+# - tests/ directory mirrors src/ structure
+# - Every public function has at least one test
+# - Use fixtures in conftest.py for shared setup
+# - Synthetic insurer data in samples/ — never hardcode test data in test files
+# - Test names: test_<what>_<condition>_<expected>
+#   Example: test_parse_guidewire_claim_returns_valid_profile
+# - No mocking of core business logic. Mock only external calls (LLM API, file IO).
+
+# ---------------------------------------------------------------------------
+# ERROR HANDLING
+# ---------------------------------------------------------------------------
+# - Custom exception hierarchy rooted in AdaptInsureError
+# - Every exception has: error_code (str), message (str), details (dict | None)
+# - Categories: SchemaValidationError, DiscoveryError, MappingError, GenerationError,
+#   TestHarnessError, MonitorError, LLMError, ConfigError
+# - Never catch bare Exception. Catch specific types.
+# - Log errors with full context before re-raising.
+# - API endpoints return structured error responses, never stack traces.
+
+# ---------------------------------------------------------------------------
+# GIT RULES
+# ---------------------------------------------------------------------------
+# - Commit after EVERY working feature. Small, frequent commits.
+# - Format: type(scope): short description
+#
+#   Types: feat, fix, refactor, test, docs, chore, schema
+#   Scopes: schema, discovery, mapping, generator, testing, monitor, api, samples
+#
+#   Examples:
+#     feat(schema): add Claim and Exposure pydantic models
+#     feat(discovery): implement JSON parser with field type inference
+#     test(mapping): add semantic matcher tests for guidewire fields
+#     docs: write Phase 1 spec
+#     fix(generator): handle nullable fields in adapter template
+#     schema: add catastrophe_code to Claim model
+#     chore: update requirements.txt
+#
+# - Work on main. No branch overhead for solo builds.
+# - Never commit: .env, __pycache__, generated/*.py (except .gitkeep),
+#   .DS_Store, *.pyc, .pytest_cache
+# - Tag each completed phase: git tag -a phase-X-complete -m "Phase X done"
+# - Commit message must describe WHAT changed, not HOW.
+#   Bad:  "updated file"
+#   Good: "feat(discovery): add XML namespace detection for ACORD formats"
+
+# ---------------------------------------------------------------------------
+# PROJECT STRUCTURE
+# ---------------------------------------------------------------------------
+#
+# adapt-insurance/
+# ├── .cursorrules              <- This file
+# ├── PROJECT.md                <- Product vision, research, architecture (read first)
+# ├── TASKS.md                  <- Phase overview and status
+# ├── README.md                 <- For external readers / demo
+# ├── requirements.txt
+# ├── .env.example
+# ├── .gitignore
+# ├── src/
+# │   ├── __init__.py
+# │   ├── config.py             <- Settings, env vars, Gemini API config
+# │   ├── exceptions.py         <- Custom exception hierarchy
+# │   ├── llm/
+# │   │   ├── __init__.py
+# │   │   └── client.py         <- Single LLM client wrapper
+# │   ├── schema/               <- Universal insurance claims schema
+# │   │   ├── __init__.py
+# │   │   ├── models.py         <- Pydantic models (Claim, Exposure, etc.)
+# │   │   ├── enums.py          <- StrEnum types
+# │   │   └── validators.py     <- Cross-field and business rule validators
+# │   ├── discovery/            <- Analyze incoming data formats
+# │   │   ├── __init__.py
+# │   │   ├── engine.py         <- Main discovery orchestrator
+# │   │   ├── parsers/
+# │   │   │   ├── __init__.py
+# │   │   │   ├── json_parser.py
+# │   │   │   ├── xml_parser.py
+# │   │   │   ├── csv_parser.py
+# │   │   │   └── doc_parser.py
+# │   │   ├── analyzer.py       <- LLM-powered field analysis
+# │   │   └── profile.py        <- ClientProfile model
+# │   ├── mapping/              <- Map client fields to universal schema
+# │   │   ├── __init__.py
+# │   │   ├── engine.py         <- Main mapping orchestrator
+# │   │   ├── semantic_matcher.py
+# │   │   ├── transform_detector.py
+# │   │   ├── gap_analyzer.py
+# │   │   ├── confidence.py
+# │   │   └── config.py         <- MappingConfig model
+# │   ├── generator/            <- Generate adapter code from config
+# │   │   ├── __init__.py
+# │   │   ├── engine.py         <- Main generator orchestrator
+# │   │   ├── templates/
+# │   │   │   ├── adapter_class.py.j2
+# │   │   │   ├── field_transforms.py.j2
+# │   │   │   ├── validator.py.j2
+# │   │   │   └── test_adapter.py.j2
+# │   │   └── registry.py       <- Tracks all generated adapters
+# │   ├── testing/              <- Auto-generated test harness
+# │   │   ├── __init__.py
+# │   │   ├── contract_tests.py
+# │   │   ├── roundtrip.py
+# │   │   ├── edge_cases.py
+# │   │   └── reporter.py
+# │   ├── monitor/              <- Drift detection + alerting
+# │   │   ├── __init__.py
+# │   │   ├── detector.py
+# │   │   ├── differ.py
+# │   │   ├── alerter.py
+# │   │   └── proposer.py
+# │   └── api/                  <- FastAPI endpoints
+# │       ├── __init__.py
+# │       ├── app.py
+# │       └── routes/
+# │           ├── discovery.py
+# │           ├── mapping.py
+# │           ├── generate.py
+# │           ├── test.py
+# │           └── monitor.py
+# ├── samples/                  <- Synthetic insurer data (3 formats)
+# │   ├── guidewire_carrier/
+# │   ├── acord_carrier/
+# │   └── legacy_carrier/
+# ├── generated/                <- Output — generated adapters live here
+# │   └── .gitkeep
+# ├── tests/                    <- Tests for the platform itself
+# │   ├── __init__.py
+# │   ├── conftest.py
+# │   ├── test_schema.py
+# │   ├── test_discovery.py
+# │   ├── test_mapping.py
+# │   ├── test_generator.py
+# │   └── test_monitor.py
+# └── docs/
+#     ├── PHASE_1_SPEC.md
+#     ├── PHASE_2_SPEC.md
+#     ├── PHASE_3_SPEC.md
+#     ├── PHASE_4_SPEC.md
+#     ├── PHASE_5_SPEC.md
+#     └── PHASE_6_SPEC.md
+
+# ---------------------------------------------------------------------------
+# NON-NEGOTIABLE
+# ---------------------------------------------------------------------------
+# - PROJECT.md and phase specs are the source of truth. Always.
+# - Pydantic models for ALL data. No raw dicts crossing module boundaries.
+# - LLM outputs configs. Templates write code. Never the other way around.
+# - All amounts use Decimal. All dates use timezone-aware datetime.
+# - Every generated adapter is deterministic — same config = same code every time.
+# - Human-in-the-loop for all mapping approvals. No auto-deploying adapters.
+# - Insurance domain terminology must be correct. "Excess" is not "premium."
+# - Every phase ends with passing tests before moving to the next phase.
+# - Commit after every working feature. No mega-commits.
+# - Zero tolerance for: bare Exception catches, print() debugging, Any types,
+#   hardcoded secrets, float for money, naive datetimes.
