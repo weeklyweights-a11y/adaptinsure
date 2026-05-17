@@ -9,6 +9,8 @@ from pathlib import Path
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from src.exceptions import ConfigError
+
 
 class Settings(BaseSettings):
     """Environment-backed settings for AdaptInsure."""
@@ -20,6 +22,10 @@ class Settings(BaseSettings):
     )
 
     gemini_api_key: str = Field(default="", validation_alias="GEMINI_API_KEY")
+    gemini_model_discovery: str = Field(
+        default="gemini-2.5-flash",
+        validation_alias="GEMINI_MODEL_DISCOVERY",
+    )
     log_level: str = "INFO"
     generated_adapters_dir: Path = Path("generated")
 
@@ -33,6 +39,15 @@ def get_settings() -> Settings:
     if _settings is None:
         _settings = Settings()
     return _settings
+
+
+def validate_gemini_config() -> None:
+    """Raise ConfigError if GEMINI_API_KEY is missing when LLM is required."""
+    if not get_settings().gemini_api_key:
+        raise ConfigError(
+            "CFG_MISSING_API_KEY",
+            "GEMINI_API_KEY is required for LLM operations",
+        )
 
 
 def setup_logging(level: str | None = None) -> None:
