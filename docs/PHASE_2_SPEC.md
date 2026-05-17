@@ -329,16 +329,16 @@ After this step:
 
 ## Step 7: LLM Analyzer
 
-The intelligence layer — uses Claude to add insurance domain understanding to parsed fields.
+The intelligence layer — uses Google Gemini to add insurance domain understanding to parsed fields.
 
 What to create:
 
 First, src/llm/__init__.py and src/llm/client.py:
 
 LLMClient class:
-- Takes anthropic API key from config
+- Takes Gemini API key from config (`GEMINI_API_KEY`)
 - async method: analyze(system_prompt: str, user_prompt: str, output_model: type[BaseModel]) -> BaseModel
-- Sends request to Claude API (claude-sonnet-4-20250514)
+- Sends request to Gemini API via `google-genai` (model from `GEMINI_MODEL_DISCOVERY`, default `gemini-2.5-flash`)
 - Parses response as JSON
 - Validates against the provided Pydantic model
 - If validation fails, retries once with error feedback appended to prompt
@@ -351,7 +351,7 @@ Then, src/discovery/analyzer.py:
 InsuranceFieldAnalyzer class:
 - Takes LLMClient as dependency
 - async method: annotate_fields(fields: list of FieldInfo, source_format: str, notes: list of str) -> list of FieldInfo
-- Sends the field list to Claude with a system prompt explaining:
+- Sends the field list to Gemini with a system prompt explaining:
   - You are an insurance data integration expert
   - You understand ACORD standards, Guidewire ClaimCenter, Duck Creek Claims, and legacy insurance systems
   - For each field, provide: insurance_annotation (what this field means in insurance terms), updated confidence score
@@ -366,7 +366,7 @@ After this step:
 
 ### Step 7 Tests
 
-LLMClient tests (mock the anthropic API — don't make real calls in tests):
+LLMClient tests (mock the `google.genai` client — don't make real calls in tests):
 - Successful API call returns validated Pydantic model
 - API call with invalid response retries once
 - API call that fails twice raises LLMError
@@ -409,7 +409,7 @@ DiscoveryEngine class:
   4. If data_dictionary provided, also parse it and merge field descriptions into parsed fields
   5. Call InsuranceFieldAnalyzer to add domain annotations
   6. Build and return ClientProfile with all fields, notes, warnings
-- Error handling: wrap each step, catch specific errors, add context, re-raise as DiscoveryError
+- Error handling: wrap parser/orchestration steps, catch specific errors, add context, re-raise as `DiscoveryError` with `DISC_*` codes. **`ConfigError` and `LLMError` propagate unchanged** (do not wrap).
 - Log each step with timing
 
 After this step:
