@@ -7,7 +7,9 @@ from datetime import datetime, timezone
 import pytest
 from pydantic import ValidationError
 
+from src.discovery.parsers import detect_format
 from src.discovery.profile import ClientProfile, FieldInfo
+from src.exceptions import DiscoveryError
 
 UTC = timezone.utc
 
@@ -106,3 +108,212 @@ class TestClientProfile:
                 fields=[],
                 created_at=datetime.now(UTC),
             )
+
+
+class TestDetectFormat:
+    """Format detection tests."""
+
+    def test_json_object_detected(self) -> None:
+        """JSON object returns json."""
+        assert detect_format('{"claim_id": "123"}') == "json"
+
+    def test_json_array_detected(self) -> None:
+        """JSON array returns json."""
+        assert detect_format('[{"claim_id": "123"}]') == "json"
+
+    def test_xml_with_declaration_detected(self) -> None:
+        """XML with declaration returns xml."""
+        assert detect_format('<?xml version="1.0"?><claims></claims>') == "xml"
+
+    def test_xml_without_declaration_detected(self) -> None:
+        """XML without declaration returns xml."""
+        assert detect_format('<claims><claim id="1"/></claims>') == "xml"
+
+    def test_csv_comma_detected(self) -> None:
+        """Comma-delimited CSV returns csv."""
+        assert detect_format("id,name,date\n1,John,2024-01-01\n") == "csv"
+
+    def test_csv_pipe_detected(self) -> None:
+        """Pipe-delimited data returns csv."""
+        assert detect_format("id|name|date\n1|John|2024-01-01\n") == "csv"
+
+    def test_empty_input_raises(self) -> None:
+        """Empty input raises DiscoveryError."""
+        with pytest.raises(DiscoveryError) as exc_info:
+            detect_format("")
+        assert exc_info.value.error_code == "DISC_EMPTY_INPUT"
+
+    def test_whitespace_only_raises(self) -> None:
+        """Whitespace-only input raises DiscoveryError."""
+        with pytest.raises(DiscoveryError):
+            detect_format("   \n\t  ")
+
+    def test_binary_garbage_returns_unknown(self) -> None:
+        """Non-structured text returns unknown."""
+        assert detect_format("not a format at all really") == "unknown"
+
+    def test_json_with_leading_whitespace(self) -> None:
+        """JSON with leading whitespace still detected."""
+        assert detect_format('  {"claim_id": "123"}') == "json"
+
+    def test_fixed_width_heuristic(self) -> None:
+        """Uniform line lengths return fixed_width."""
+        raw = "ID  NAME    DATE      \n001 John    20240101  \n002 Jane    20240102  \n"
+        assert detect_format(raw) == "fixed_width"
+
+
+class TestDiscoveryEngine:
+    """DiscoveryEngine integration tests (mocked analyzer)."""
+
+    @pytest.mark.asyncio
+    async def test_json_produces_client_profile(
+        self,
+        sample_json_claims: str,
+        mock_field_analyzer: object,
+    ) -> None:
+        """JSON input produces valid ClientProfile."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        profile = await engine.discover(sample_json_claims, "gw-carrier")
+        assert profile.source_format == "json"
+        assert profile.total_fields_detected == len(profile.fields)
+        assert any(f.insurance_annotation for f in profile.fields)
+
+    @pytest.mark.asyncio
+    async def test_xml_produces_client_profile(
+        self,
+        sample_xml_claims: str,
+        mock_field_analyzer: object,
+    ) -> None:
+        """XML input produces valid ClientProfile."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        profile = await engine.discover(sample_xml_claims, "acord-carrier")
+        assert profile.source_format == "xml"
+        assert any("ACORD" in note for note in profile.notes)
+
+    @pytest.mark.asyncio
+    async def test_csv_produces_client_profile(
+        self,
+        sample_csv_claims: str,
+        mock_field_analyzer: object,
+    ) -> None:
+        """CSV input produces valid ClientProfile."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        profile = await engine.discover(sample_csv_claims, "legacy-carrier")
+        assert profile.source_format == "csv"
+        assert profile.total_records_sampled == 4
+
+    @pytest.mark.asyncio
+    async def test_dictionary_merge(
+        self,
+        sample_json_claims: str,
+        sample_data_dictionary: str,
+        mock_field_analyzer: object,
+    ) -> None:
+        """Data dictionary merge enriches and appends fields."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        profile = await engine.discover(
+            sample_json_claims,
+            "gw-carrier",
+            data_dictionary=sample_data_dictionary,
+        )
+        assert any(f.source_name == "extraDocField" for f in profile.fields)
+
+    @pytest.mark.asyncio
+    async def test_empty_input_raises(self, mock_field_analyzer: object) -> None:
+        """Empty input raises DiscoveryError."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        with pytest.raises(DiscoveryError) as exc_info:
+            await engine.discover("", "client")
+        assert exc_info.value.error_code == "DISC_EMPTY_INPUT"
+
+    @pytest.mark.asyncio
+    async def test_unknown_format_raises(self, mock_field_analyzer: object) -> None:
+        """Unknown format raises DiscoveryError."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        with pytest.raises(DiscoveryError) as exc_info:
+            await engine.discover("plain text only", "client")
+        assert exc_info.value.error_code == "DISC_UNSUPPORTED_FORMAT"
+
+    @pytest.mark.asyncio
+    async def test_fixed_width_raises(self, mock_field_analyzer: object) -> None:
+        """Fixed-width format raises DiscoveryError."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        raw = "ID  NAME    DATE      \n001 John    20240101  \n002 Jane    20240102  \n"
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        with pytest.raises(DiscoveryError) as exc_info:
+            await engine.discover(raw, "client")
+        assert exc_info.value.error_code == "DISC_UNSUPPORTED_FORMAT"
+
+    @pytest.mark.asyncio
+    async def test_malformed_json_raises(self, mock_field_analyzer: object) -> None:
+        """Invalid JSON-like input raises DiscoveryError (unsupported or parse failed)."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        with pytest.raises(DiscoveryError) as exc_info:
+            await engine.discover("{not json", "client")
+        assert exc_info.value.error_code in ("DISC_PARSE_FAILED", "DISC_UNSUPPORTED_FORMAT")
+
+    @pytest.mark.asyncio
+    async def test_malformed_xml_raises(self, mock_field_analyzer: object) -> None:
+        """Malformed XML raises DISC_PARSE_FAILED."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        with pytest.raises(DiscoveryError) as exc_info:
+            await engine.discover("<unclosed>", "client")
+        assert exc_info.value.error_code == "DISC_PARSE_FAILED"
+
+    @pytest.mark.asyncio
+    async def test_json_notes_camel_case(
+        self,
+        sample_json_claims: str,
+        mock_field_analyzer: object,
+    ) -> None:
+        """JSON profile notes mention camelCase when applicable."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        profile = await engine.discover(sample_json_claims, "gw-carrier")
+        assert any("camelCase" in note for note in profile.notes)
+
+    @pytest.mark.asyncio
+    async def test_client_profile_json_round_trip(
+        self,
+        sample_json_claims: str,
+        mock_field_analyzer: object,
+    ) -> None:
+        """ClientProfile serializes to JSON and validates on load."""
+        from src.discovery.engine import DiscoveryEngine
+        from src.discovery.profile import ClientProfile
+        from src.llm.client import LLMClient
+
+        engine = DiscoveryEngine(LLMClient(api_key="test"), field_analyzer=mock_field_analyzer)
+        profile = await engine.discover(sample_json_claims, "gw-carrier")
+        payload = profile.model_dump_json()
+        restored = ClientProfile.model_validate_json(payload)
+        assert restored.client_name == profile.client_name
+        assert len(restored.fields) == len(profile.fields)

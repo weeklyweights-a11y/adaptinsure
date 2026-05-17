@@ -3,9 +3,7 @@
 from __future__ import annotations
 
 import csv
-import io
 import json
-import re
 from typing import Final
 
 import chardet
@@ -113,12 +111,3 @@ def _looks_like_fixed_width(text: str) -> bool:
     min_len = min(lengths)
     max_len = max(lengths)
     return max_len - min_len <= _FIXED_WIDTH_TOLERANCE
-
-
-def _sniff_csv_delimiter(sample: str) -> str | None:
-    """Try to detect CSV delimiter from a sample."""
-    try:
-        dialect = csv.Sniffer().sniff(sample, delimiters=",\t|;")
-        return dialect.delimiter
-    except csv.Error:
-        return None
