@@ -8,7 +8,7 @@ import pytest
 
 from src.exceptions import MappingError, SchemaValidationError
 from src.schema import BaseAdapter, TransformResult
-from tests.conftest import MockAdapter, claim_to_mapped_dict
+from tests.conftest import MockAdapter
 
 
 class TestBaseAdapter:
