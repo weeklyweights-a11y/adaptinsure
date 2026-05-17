@@ -205,3 +205,109 @@ def mock_adapter() -> MockAdapter:
 def claim_to_mapped_dict(claim: Claim) -> dict[str, object]:
     """Serialize claim to dict for adapter tests (Python mode for strict validation)."""
     return claim.model_dump()
+
+
+@pytest.fixture(autouse=True)
+def discovery_test_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Set GEMINI_API_KEY for discovery tests that hit validate_gemini_config."""
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    import src.config as config_module
+
+    config_module._settings = None
+
+
+@pytest.fixture
+def sample_json_claims() -> str:
+    """Guidewire-style JSON with three claims and nested exposures."""
+    return json.dumps(
+        [
+            {
+                "claimId": "GW-001",
+                "lossDate": "2024-01-15",
+                "claimStatus": "open",
+                "exposures": [{"exposureType": "BI", "reservedAmount": 5000}],
+            },
+            {
+                "claimId": "GW-002",
+                "lossDate": "2024-02-01",
+                "claimStatus": "closed",
+                "exposures": [{"exposureType": "PD", "reservedAmount": 1200}],
+            },
+            {
+                "claimId": "GW-003",
+                "lossDate": "2024-03-10",
+                "claimStatus": "open",
+                "exposures": [],
+            },
+        ]
+    )
+
+
+@pytest.fixture
+def sample_xml_claims() -> str:
+    """ACORD-like XML with two claims."""
+    return (
+        '<?xml version="1.0"?>'
+        '<ACORD xmlns="http://www.ACORD.org/standards/PC_Surety/ACORD1/xml/" Version="2.0">'
+        "<Claims>"
+        '<Claim><ClaimId>C1</ClaimId><LossDt>2024-01-01</LossDt></Claim>'
+        '<Claim><ClaimId>C2</ClaimId><LossDt>2024-02-01</LossDt></Claim>'
+        "</Claims></ACORD>"
+    )
+
+
+@pytest.fixture
+def sample_csv_claims() -> str:
+    """Pipe-delimited legacy CSV with four claims."""
+    return (
+        "CLM_ID|CLMNT_NM|DT_OF_LSS|STATUS\n"
+        "1001|SMITH|20240115|OPEN\n"
+        "1002|JONES|20240201|CLOSED\n"
+        "1003|LEE|20240301|OPEN\n"
+        "1004|PARK|20240401|OPEN\n"
+    )
+
+
+@pytest.fixture
+def sample_data_dictionary() -> str:
+    """Markdown data dictionary with ten fields."""
+    return (
+        "| Field | Type | Description |\n"
+        "| --- | --- | --- |\n"
+        "| claimId | string | Unique claim identifier |\n"
+        "| lossDate | date | Date of loss |\n"
+        "| claimStatus | string | Claim status code |\n"
+        "| exposureType | string | Exposure type |\n"
+        "| reservedAmount | decimal | Reserve amount |\n"
+        "| CLM_ID | string | Legacy claim ID |\n"
+        "| CLMNT_NM | string | Claimant name |\n"
+        "| DT_OF_LSS | date | Date of loss (legacy) |\n"
+        "| STATUS | string | Legacy status |\n"
+        "| extraDocField | string | Field only in dictionary |\n"
+    )
+
+
+@pytest.fixture
+def mock_field_analyzer() -> object:
+    """Analyzer that annotates fields without calling Gemini."""
+    from src.discovery.profile import FieldInfo
+
+    class _StubAnalyzer:
+        async def annotate_fields(
+            self,
+            fields: list[FieldInfo],
+            source_format: str,
+            notes: list[str],
+        ) -> list[FieldInfo]:
+            del source_format, notes
+            return [
+                f.model_copy(
+                    update={
+                        "insurance_annotation": f"annotated {f.source_name}",
+                        "confidence": 0.9,
+                    }
+                )
+                for f in fields
+            ]
+
+    return _StubAnalyzer()

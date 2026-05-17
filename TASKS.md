@@ -49,7 +49,7 @@ Done means: all models instantiate with valid data, reject invalid data, validat
 
 ## Phase 2: Discovery Engine
 **Spec:** docs/PHASE_2_SPEC.md
-**Status:** [ ] Not started
+**Status:** [x] Complete
 
 What gets built:
 - Format auto-detection (JSON vs XML vs CSV vs fixed-width)
