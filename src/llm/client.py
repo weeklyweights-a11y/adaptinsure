@@ -35,6 +35,7 @@ class LLMClient:
         system_prompt: str,
         user_prompt: str,
         output_model: type[T],
+        temperature: float = 0.0,
     ) -> T:
         """Call Gemini and validate response against a Pydantic model."""
         prompt_hash = hashlib.sha256(
@@ -55,7 +56,7 @@ class LLMClient:
                         )
                     ],
                     config=types.GenerateContentConfig(
-                        temperature=0.0,
+                        temperature=temperature,
                         response_mime_type="application/json",
                         response_schema=output_model,
                     ),
