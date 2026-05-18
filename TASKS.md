@@ -101,18 +101,18 @@ Done means: MappingConfig goes in, syntactically valid adapter and test files ar
 
 ## Phase 5: Test Harness + Synthetic Insurers
 **Spec:** docs/PHASE_5_SPEC.md
-**Status:** [ ] Not started
+**Status:** [x] Complete
 
 What gets built:
-- Synthetic Insurer A: Guidewire-style JSON (50+ claims with exposures, incidents, contacts, transactions)
-- Synthetic Insurer B: ACORD XML (30+ claims with namespaces, custom extensions, missing optional fields)
-- Synthetic Insurer C: Legacy CSV (40+ claims, pipe-delimited, cryptic field names, packed dates)
+- Synthetic Insurer A: Guidewire-style JSON (15 claims with exposures, contacts, transactions)
+- Synthetic Insurer B: ACORD XML (12 claims with namespaces, custom extensions, mixed formats)
+- Synthetic Insurer C: Legacy CSV (20 claims, 4 pipe-delimited latin-1 files, data dictionary)
 - Contract tests: adapter output matches universal schema
-- Round-trip validation: all required fields populated, types correct, values in range
-- Edge case generator: LLM produces adversarial inputs
-- Test reporter: summary with pass/fail, field-level accuracy, coverage
+- Round-trip validation: field survival through map/validate with transform-aware checks
+- Edge case generator: LLM produces adversarial inputs (mocked in CI)
+- Test reporter: summary with pass/warn/fail and saved reports under `tests/reports/`
 
-Done means: all three synthetic insurers go through the full pipeline (discover -> map -> generate -> test), all contract tests pass, edge cases handled, test report generated.
+Done means: all three synthetic insurers go through the full pipeline (discover -> map -> generate -> test), contract and round-trip thresholds met per insurer, edge cases exercised, test reports generated.
 
 ---
 

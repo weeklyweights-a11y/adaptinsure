@@ -8,6 +8,9 @@ requires-python = ">=3.12"
 pythonpath = ["."]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = [
+    "integration: full pipeline tests against samples/",
+]
 
 [tool.ruff]
 line-length = 100

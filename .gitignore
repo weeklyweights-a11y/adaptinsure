@@ -14,3 +14,5 @@ build/
 generated/*
 !generated/.gitkeep
 data/knowledge_base/*.json
+tests/reports/*.txt
+tests/reports/*.json
