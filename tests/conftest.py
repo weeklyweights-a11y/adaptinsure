@@ -578,3 +578,19 @@ def test_mapping_config(fixed_generation_timestamp: datetime) -> object:
         ),
         created_at=fixed_generation_timestamp,
     )
+
+
+@pytest.fixture
+def monitor_dirs(tmp_path: object) -> dict[str, object]:
+    """Temporary directories for drift monitor integration tests."""
+    from pathlib import Path
+
+    root = Path(str(tmp_path))
+    schema_dir = root / "schemas"
+    generated_dir = root / "generated"
+    generated_dir.mkdir(parents=True)
+    return {
+        "schema_dir": schema_dir,
+        "generated_dir": generated_dir,
+        "pending_path": root / "pending_fixes.json",
+    }

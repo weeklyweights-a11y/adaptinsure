@@ -14,5 +14,16 @@ build/
 generated/*
 !generated/.gitkeep
 data/knowledge_base/*.json
+data/pending_fixes.json
+data/schemas/*.json
+data/fix_history.json
 tests/reports/*.txt
 tests/reports/*.json
+
+# Markdown: only root README is published
+*.md
+!README.md
+
+tmp_e2e_gen/
+tmp_gen_test/
+tmp_p5_debug/
