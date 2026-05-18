@@ -1,0 +1,1096 @@
+[
+  {
+    "claimId": "GW-001",
+    "claimNumber": "CLM-2024-0001",
+    "lossDate": "2024-01-15",
+    "reportedDate": "2024-01-16",
+    "claimState": "open",
+    "lossCause": "CT:collision",
+    "lossDescription": "Sample loss scenario 1 for personal_auto",
+    "lineOfBusiness": "personal_auto",
+    "policyNumber": "POL-00001",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 6000.0,
+    "totalPaid": 1300.0,
+    "totalReserves": 4700.0,
+    "deductible": 600.0,
+    "lossLocationAddress": {
+      "street": "101 Main St",
+      "city": "Cleveland",
+      "state": "OH",
+      "postalCode": "4310"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-001",
+    "assignedAdjusterName": "Adjuster 1",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-001-1",
+        "exposureType": "vehicle_damage",
+        "coverageType": "Collision",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-001-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-001-1",
+        "claimId": "GW-001",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith1",
+        "orgName": null,
+        "email": "jane1@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-001-1",
+        "claimId": "GW-001",
+        "exposureId": "EXP-GW-001-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-01-16",
+        "checkNumber": "CHK00001",
+        "payeeName": "Payee 1",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-002",
+    "claimNumber": "CLM-2024-0002",
+    "lossDate": "2024-02-15",
+    "reportedDate": "2024-02-16",
+    "claimState": "open",
+    "lossCause": "collision",
+    "lossDescription": "Sample loss scenario 2 for personal_auto",
+    "lineOfBusiness": "personal_auto",
+    "policyNumber": "POL-00002",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 7000.0,
+    "totalPaid": 1400.0,
+    "totalReserves": 5600.0,
+    "deductible": 700.0,
+    "lossLocationAddress": {
+      "street": "102 Main St",
+      "city": "Cincinnati",
+      "state": "OH",
+      "postalCode": "4320"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-002",
+    "assignedAdjusterName": "Adjuster 2",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-002-1",
+        "exposureType": "vehicle_damage",
+        "coverageType": "Collision",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-002-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-002-1",
+        "claimId": "GW-002",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith2",
+        "orgName": null,
+        "email": "jane2@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-002-1",
+        "claimId": "GW-002",
+        "exposureId": "EXP-GW-002-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-02-16",
+        "checkNumber": "CHK00002",
+        "payeeName": "Payee 2",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-003",
+    "claimNumber": "CLM-2024-0003",
+    "lossDate": "2024-03-15",
+    "reportedDate": "2024-03-16",
+    "claimState": "open",
+    "lossCause": "CT:theft",
+    "lossDescription": "Sample loss scenario 3 for personal_auto",
+    "lineOfBusiness": "personal_auto",
+    "policyNumber": "POL-00003",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 8000.0,
+    "totalPaid": 1500.0,
+    "totalReserves": 6500.0,
+    "deductible": 800.0,
+    "lossLocationAddress": {
+      "street": "103 Main St",
+      "city": "Toledo",
+      "state": "OH",
+      "postalCode": "4330"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-003",
+    "assignedAdjusterName": "Adjuster 3",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-003-1",
+        "exposureType": "vehicle_damage",
+        "coverageType": "Collision",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-003-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-003-1",
+        "claimId": "GW-003",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith3",
+        "orgName": null,
+        "email": "jane3@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-003-1",
+        "claimId": "GW-003",
+        "exposureId": "EXP-GW-003-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-03-16",
+        "checkNumber": "CHK00003",
+        "payeeName": "Payee 3",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-004",
+    "claimNumber": "CLM-2024-0004",
+    "lossDate": "2024-04-15",
+    "reportedDate": "2024-04-16",
+    "claimState": "open",
+    "lossCause": "fire",
+    "lossDescription": "Sample loss scenario 4 for homeowners",
+    "lineOfBusiness": "homeowners",
+    "policyNumber": "POL-00004",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 9000.0,
+    "totalPaid": 1600.0,
+    "totalReserves": 7400.0,
+    "deductible": 900.0,
+    "lossLocationAddress": {
+      "street": "104 Main St",
+      "city": "Columbus",
+      "state": "OH",
+      "postalCode": "4340"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-004",
+    "assignedAdjusterName": "Adjuster 4",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-004-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-004-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-004-1",
+        "claimId": "GW-004",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith4",
+        "orgName": null,
+        "email": "jane4@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-004-1",
+        "claimId": "GW-004",
+        "exposureId": "EXP-GW-004-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-04-16",
+        "checkNumber": "CHK00004",
+        "payeeName": "Payee 4",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-005",
+    "claimNumber": "CLM-2024-0005",
+    "lossDate": "2024-05-15",
+    "reportedDate": "2024-05-16",
+    "claimState": "open",
+    "lossCause": "water_damage",
+    "lossDescription": "Sample loss scenario 5 for homeowners",
+    "lineOfBusiness": "homeowners",
+    "policyNumber": "POL-00005",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 10000.0,
+    "totalPaid": 1700.0,
+    "totalReserves": 8300.0,
+    "deductible": 500.0,
+    "lossLocationAddress": {
+      "street": "105 Main St",
+      "city": "Cleveland",
+      "state": "OH",
+      "postalCode": "4350"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-005",
+    "assignedAdjusterName": "Adjuster 5",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-005-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-005-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-005-1",
+        "claimId": "GW-005",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith5",
+        "orgName": null,
+        "email": "jane5@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-005-1",
+        "claimId": "GW-005",
+        "exposureId": "EXP-GW-005-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-05-16",
+        "checkNumber": "CHK00005",
+        "payeeName": "Payee 5",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-006",
+    "claimNumber": "CLM-2024-0006",
+    "lossDate": "2024-06-15",
+    "reportedDate": "2024-06-16",
+    "claimState": "open",
+    "lossCause": "weather",
+    "lossDescription": "Sample loss scenario 6 for homeowners",
+    "lineOfBusiness": "homeowners",
+    "policyNumber": "POL-00006",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 11000.0,
+    "totalPaid": 1800.0,
+    "totalReserves": 9200.0,
+    "deductible": 600.0,
+    "lossLocationAddress": {
+      "street": "106 Main St",
+      "city": "Cincinnati",
+      "state": "OH",
+      "postalCode": "4360"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-006",
+    "assignedAdjusterName": "Adjuster 6",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-006-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-006-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-006-1",
+        "claimId": "GW-006",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith6",
+        "orgName": null,
+        "email": "jane6@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-006-1",
+        "claimId": "GW-006",
+        "exposureId": "EXP-GW-006-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-06-16",
+        "checkNumber": "CHK00006",
+        "payeeName": "Payee 6",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-007",
+    "claimNumber": "CLM-2024-0007",
+    "lossDate": "2024-07-15",
+    "reportedDate": "2024-07-16",
+    "claimState": "open",
+    "lossCause": "slip_and_fall",
+    "lossDescription": "Sample loss scenario 7 for general_liability",
+    "lineOfBusiness": "general_liability",
+    "policyNumber": "POL-00007",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 12000.0,
+    "totalPaid": 1900.0,
+    "totalReserves": 10100.0,
+    "deductible": 700.0,
+    "lossLocationAddress": {
+      "street": "107 Main St",
+      "city": "Toledo",
+      "state": "OH",
+      "postalCode": "4370"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-007",
+    "assignedAdjusterName": "Adjuster 7",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-007-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-007-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-007-1",
+        "claimId": "GW-007",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith7",
+        "orgName": null,
+        "email": "jane7@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-007-1",
+        "claimId": "GW-007",
+        "exposureId": "EXP-GW-007-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-07-16",
+        "checkNumber": "CHK00007",
+        "payeeName": "Payee 7",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-008",
+    "claimNumber": "CLM-2024-0008",
+    "lossDate": "2024-08-15",
+    "reportedDate": "2024-08-16",
+    "claimState": "open",
+    "lossCause": "product_liability",
+    "lossDescription": "Sample loss scenario 8 for general_liability",
+    "lineOfBusiness": "general_liability",
+    "policyNumber": "POL-00008",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 13000.0,
+    "totalPaid": 2000.0,
+    "totalReserves": 11000.0,
+    "deductible": 800.0,
+    "lossLocationAddress": {
+      "street": "108 Main St",
+      "city": "Columbus",
+      "state": "OH",
+      "postalCode": "4380"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-008",
+    "assignedAdjusterName": "Adjuster 8",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-008-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-008-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-008-1",
+        "claimId": "GW-008",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith8",
+        "orgName": null,
+        "email": "jane8@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-008-1",
+        "claimId": "GW-008",
+        "exposureId": "EXP-GW-008-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-08-16",
+        "checkNumber": "CHK00008",
+        "payeeName": "Payee 8",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-009",
+    "claimNumber": "CLM-2024-0009",
+    "lossDate": "2024-09-15",
+    "reportedDate": "2024-09-16",
+    "claimState": "open",
+    "lossCause": "workplace_injury",
+    "lossDescription": "Sample loss scenario 9 for workers_comp",
+    "lineOfBusiness": "workers_comp",
+    "policyNumber": "POL-00009",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 14000.0,
+    "totalPaid": 2100.0,
+    "totalReserves": 11900.0,
+    "deductible": 900.0,
+    "lossLocationAddress": {
+      "street": "109 Main St",
+      "city": "Cleveland",
+      "state": "OH",
+      "postalCode": "4390"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-009",
+    "assignedAdjusterName": "Adjuster 9",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-009-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-009-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-009-1",
+        "claimId": "GW-009",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith9",
+        "orgName": null,
+        "email": "jane9@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-009-1",
+        "claimId": "GW-009",
+        "exposureId": "EXP-GW-009-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-09-16",
+        "checkNumber": "CHK00009",
+        "payeeName": "Payee 9",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-010",
+    "claimNumber": "CLM-2024-0010",
+    "lossDate": "2024-10-15",
+    "reportedDate": "2024-10-16",
+    "claimState": "closed",
+    "lossCause": "collision",
+    "lossDescription": "Sample loss scenario 10 for personal_auto",
+    "lineOfBusiness": "personal_auto",
+    "policyNumber": "POL-00010",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 15000.0,
+    "totalPaid": 2200.0,
+    "totalReserves": 12800.0,
+    "deductible": 500.0,
+    "lossLocationAddress": {
+      "street": "110 Main St",
+      "city": "Cincinnati",
+      "state": "OH",
+      "postalCode": "4300"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-010",
+    "assignedAdjusterName": "Adjuster 10",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-010-1",
+        "exposureType": "vehicle_damage",
+        "coverageType": "Collision",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-010-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-010-1",
+        "claimId": "GW-010",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith10",
+        "orgName": null,
+        "email": "jane10@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-010-1",
+        "claimId": "GW-010",
+        "exposureId": "EXP-GW-010-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-10-16",
+        "checkNumber": "CHK00010",
+        "payeeName": "Payee 10",
+        "status": "posted"
+      }
+    ],
+    "closedDate": "2024-08-01"
+  },
+  {
+    "claimId": "GW-011",
+    "claimNumber": "CLM-2024-0011",
+    "lossDate": "2024-11-15",
+    "reportedDate": "2024-11-16",
+    "claimState": "denied",
+    "lossCause": "fire",
+    "lossDescription": "Sample loss scenario 11 for homeowners",
+    "lineOfBusiness": "homeowners",
+    "policyNumber": "POL-00011",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 16000.0,
+    "totalPaid": 0.0,
+    "totalReserves": 13700.0,
+    "deductible": 600.0,
+    "lossLocationAddress": {
+      "street": "111 Main St",
+      "city": "Toledo",
+      "state": "OH",
+      "postalCode": "4310"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-011",
+    "assignedAdjusterName": "Adjuster 11",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-011-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-011-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-011-1",
+        "claimId": "GW-011",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith11",
+        "orgName": null,
+        "email": "jane11@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-011-1",
+        "claimId": "GW-011",
+        "exposureId": "EXP-GW-011-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-11-16",
+        "checkNumber": "CHK00011",
+        "payeeName": "Payee 11",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-012",
+    "claimNumber": "CLM-2024-0012",
+    "lossDate": "2024-12-15",
+    "reportedDate": "2024-12-16",
+    "claimState": "open",
+    "lossCause": "slip_and_fall",
+    "lossDescription": "Sample loss scenario 12 for general_liability",
+    "lineOfBusiness": "general_liability",
+    "policyNumber": "POL-00012",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 17000.0,
+    "totalPaid": 2400.0,
+    "totalReserves": 14600.0,
+    "deductible": 700.0,
+    "lossLocationAddress": {
+      "street": "112 Main St",
+      "city": "Columbus",
+      "state": "OH",
+      "postalCode": "4320"
+    },
+    "catastropheCode": null,
+    "litigationStatus": "in_litigation",
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-012",
+    "assignedAdjusterName": "Adjuster 12",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-012-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-012-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-012-1",
+        "claimId": "GW-012",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith12",
+        "orgName": null,
+        "email": "jane12@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      },
+      {
+        "contactId": "CNT-GW-012-ATTY",
+        "claimId": "GW-012",
+        "role": "attorney",
+        "firstName": "Robert",
+        "lastName": "Legal",
+        "orgName": "Legal LLP",
+        "email": "atty@legal.com",
+        "phone": "614-555-9999",
+        "dateOfBirth": null,
+        "address": null
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-012-1",
+        "claimId": "GW-012",
+        "exposureId": "EXP-GW-012-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-12-16",
+        "checkNumber": "CHK00012",
+        "payeeName": "Payee 12",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-013",
+    "claimNumber": "CLM-2024-0013",
+    "lossDate": "2024-01-15",
+    "reportedDate": "2024-01-16",
+    "claimState": "open",
+    "lossCause": "collision",
+    "lossDescription": "Sample loss scenario 13 for personal_auto",
+    "lineOfBusiness": "personal_auto",
+    "policyNumber": "POL-00013",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 18000.0,
+    "totalPaid": 2500.0,
+    "totalReserves": 15500.0,
+    "deductible": 800.0,
+    "lossLocationAddress": {
+      "street": "113 Main St",
+      "city": "Cleveland",
+      "state": "OH",
+      "postalCode": "4330"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": "active",
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-013",
+    "assignedAdjusterName": "Adjuster 13",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-013-1",
+        "exposureType": "vehicle_damage",
+        "coverageType": "Collision",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-013-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-013-1",
+        "claimId": "GW-013",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith13",
+        "orgName": null,
+        "email": "jane13@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-013-1",
+        "claimId": "GW-013",
+        "exposureId": "EXP-GW-013-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-01-16",
+        "checkNumber": "CHK00013",
+        "payeeName": "Payee 13",
+        "status": "posted"
+      },
+      {
+        "transactionId": "TXN-GW-013-REC",
+        "claimId": "GW-013",
+        "exposureId": "EXP-GW-013-1",
+        "type": "recovery",
+        "amount": 250.0,
+        "currency": "USD",
+        "transactionDate": "2024-09-01",
+        "checkNumber": null,
+        "payeeName": "Subrogant",
+        "status": "posted"
+      }
+    ],
+    "closedDate": "2024-09-01"
+  },
+  {
+    "claimId": "GW-014",
+    "claimNumber": "CLM-2024-0014",
+    "lossDate": "2024-02-15",
+    "reportedDate": "2024-02-16",
+    "claimState": "open",
+    "lossCause": "weather",
+    "lossDescription": "Sample loss scenario 14 for homeowners",
+    "lineOfBusiness": "homeowners",
+    "policyNumber": "POL-00014",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 19000.0,
+    "totalPaid": 2600.0,
+    "totalReserves": 16400.0,
+    "deductible": 900.0,
+    "lossLocationAddress": {
+      "street": "114 Main St",
+      "city": "Cincinnati",
+      "state": "OH",
+      "postalCode": "4340"
+    },
+    "catastropheCode": "CAT-2024-HURR",
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": "ADJ-014",
+    "assignedAdjusterName": "Adjuster 14",
+    "exposures": [
+      {
+        "exposureId": "EXP-GW-014-1",
+        "exposureType": "property_damage",
+        "coverageType": "Property",
+        "status": "open",
+        "reservedAmount": 3000.0,
+        "paidAmount": 500.0,
+        "deductibleAmount": 500.0,
+        "claimantId": "CNT-GW-014-1"
+      }
+    ],
+    "contacts": [
+      {
+        "contactId": "CNT-GW-014-1",
+        "claimId": "GW-014",
+        "role": "insured",
+        "firstName": "Jane",
+        "lastName": "Smith14",
+        "orgName": null,
+        "email": "jane14@example.com",
+        "phone": "614-555-0100",
+        "dateOfBirth": "1985-06-15",
+        "address": {
+          "street": "1 Oak Ave",
+          "city": "Columbus",
+          "state": "OH",
+          "postalCode": "43215"
+        }
+      }
+    ],
+    "transactions": [
+      {
+        "transactionId": "TXN-GW-014-1",
+        "claimId": "GW-014",
+        "exposureId": "EXP-GW-014-1",
+        "type": "payment",
+        "amount": 500.0,
+        "currency": "USD",
+        "transactionDate": "2024-02-16",
+        "checkNumber": "CHK00014",
+        "payeeName": "Payee 14",
+        "status": "posted"
+      }
+    ]
+  },
+  {
+    "claimId": "GW-015",
+    "claimNumber": "CLM-2024-0015",
+    "lossDate": "2024-03-15",
+    "reportedDate": "2024-03-16",
+    "claimState": "open",
+    "lossCause": "collision",
+    "lossDescription": "Sample loss scenario 15 for personal_auto",
+    "lineOfBusiness": "personal_auto",
+    "policyNumber": "POL-00015",
+    "policyEffDate": "2024-01-01",
+    "policyExpDate": "2025-01-01",
+    "totalIncurred": 0.0,
+    "totalPaid": 0.0,
+    "totalReserves": 0.0,
+    "deductible": 0.0,
+    "lossLocationAddress": {
+      "street": "115 Main St",
+      "city": "Toledo",
+      "state": "OH",
+      "postalCode": "4350"
+    },
+    "catastropheCode": null,
+    "litigationStatus": null,
+    "subrogationStatus": null,
+    "fraudIndicator": false,
+    "assignedAdjusterId": null,
+    "assignedAdjusterName": null,
+    "exposures": [],
+    "contacts": [],
+    "transactions": []
+  }
+]

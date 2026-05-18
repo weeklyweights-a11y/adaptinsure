@@ -1,0 +1,213 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Beacon Mutual Claims API",
+    "version": "10.2.0"
+  },
+  "paths": {
+    "/claims": {
+      "get": {
+        "summary": "List claims",
+        "responses": {
+          "200": {
+            "description": "Claims",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClaimList"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClaimList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Claim"
+        }
+      },
+      "Claim": {
+        "type": "object",
+        "properties": {
+          "claimId": {
+            "type": "string"
+          },
+          "claimNumber": {
+            "type": "string"
+          },
+          "lossDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reportedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "claimState": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed",
+              "denied",
+              "reopened",
+              "pending"
+            ]
+          },
+          "lossCause": {
+            "type": "string"
+          },
+          "lossDescription": {
+            "type": "string"
+          },
+          "lineOfBusiness": {
+            "type": "string"
+          },
+          "totalIncurred": {
+            "type": "number"
+          },
+          "totalPaid": {
+            "type": "number"
+          },
+          "totalReserves": {
+            "type": "number"
+          },
+          "deductible": {
+            "type": "number"
+          },
+          "lossLocationAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "exposures": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Exposure"
+            }
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
+            }
+          },
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          }
+        }
+      },
+      "Exposure": {
+        "type": "object",
+        "properties": {
+          "exposureId": {
+            "type": "string"
+          },
+          "exposureType": {
+            "type": "string"
+          },
+          "coverageType": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "open",
+              "closed"
+            ]
+          },
+          "reservedAmount": {
+            "type": "number"
+          },
+          "paidAmount": {
+            "type": "number"
+          },
+          "deductibleAmount": {
+            "type": "number"
+          },
+          "claimantId": {
+            "type": "string"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "contactId": {
+            "type": "string"
+          },
+          "claimId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "insured",
+              "claimant",
+              "witness",
+              "attorney"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "claimId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "payment",
+              "recovery",
+              "reserve_set",
+              "reserve_change"
+            ]
+          },
+          "amount": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "transactionDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
