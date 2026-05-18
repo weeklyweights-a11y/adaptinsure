@@ -1,0 +1,335 @@
+# AUTO-GENERATED — DO NOT EDIT — regenerate from config
+# Client: {{ client_name }}
+# Source format: {{ source_format }}
+# Generated at: {{ timestamp }}
+
+"""Auto-generated adapter for {{ client_name }}."""
+
+from __future__ import annotations
+
+import csv
+import io
+import json
+import logging
+import re
+from datetime import datetime, timezone
+from decimal import Decimal
+from typing import Any
+
+{% if source_format == "xml" %}
+from lxml import etree
+{% endif %}
+
+from src.discovery.codes import DISC_PARSE_FAILED
+from src.exceptions import DiscoveryError, MappingError, SchemaValidationError
+from src.mapping.codes import MAP_MATCH_FAILED
+from src.schema.base_adapter import BaseAdapter
+from src.schema.enums import (
+    ClaimStatus,
+    LineOfBusiness,
+    LossCause,
+{% for enum_name in enum_imports %}
+    {{ enum_name }},
+{% endfor %}
+)
+from src.schema.models import Address, Claim
+from src.schema.validators import ValidationWarning, validate_claim_consistency
+
+logger = logging.getLogger(__name__)
+
+
+class {{ class_name }}(BaseAdapter):
+    """Auto-generated adapter for {{ client_name }}.
+
+    Source format: {{ source_format }}.
+    Generated at: {{ timestamp }}.
+    """
+
+    FIELD_MAPPINGS: dict[str, str] = {
+{% for source, target in field_mappings.items() %}
+        "{{ source }}": "{{ target }}",
+{% endfor %}
+    }
+
+    TRANSFORMS: dict[str, str] = {
+{% for source, method in transforms_by_source.items() %}
+        "{{ source }}": "{{ method }}",
+{% endfor %}
+    }
+
+    _SOURCE_PATHS: dict[str, str | None] = {
+{% for row in mapping_rows %}
+        "{{ row.source_field }}": {% if row.source_path %}"{{ row.source_path }}"{% else %}None{% endif %},
+{% endfor %}
+    }
+
+    @property
+    def name(self) -> str:
+        """Human-readable adapter name."""
+        return "{{ client_name }} Adapter"
+
+    @property
+    def version(self) -> str:
+        """Adapter version."""
+        return "1.0.0"
+
+    @property
+    def source_system(self) -> str:
+        """Source system identifier."""
+        return "{{ client_name }}"
+
+    @property
+    def supported_formats(self) -> list[str]:
+        """Supported input formats."""
+        return ["{{ source_format }}"]
+
+    def parse_raw(self, raw_input: str | bytes) -> list[dict[str, object]]:
+        """Parse raw input into a list of record dicts."""
+        try:
+            text = raw_input if isinstance(raw_input, str) else raw_input.decode("utf-8")
+{% if source_format == "json" %}
+            data = json.loads(text)
+            if isinstance(data, list):
+                return [dict(item) for item in data]
+            if isinstance(data, dict):
+                return [dict(data)]
+            msg = "JSON root must be object or array"
+            raise ValueError(msg)
+{% elif source_format == "xml" %}
+            root = etree.fromstring(text.encode("utf-8"))
+            records: list[dict[str, object]] = []
+            for element in root.iter():
+                if len(element) == 0 and element.text:
+                    continue
+                if element.tag.endswith("Claim") or element.tag == "Claim":
+                    record: dict[str, object] = {}
+                    for child in element:
+                        tag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
+                        record[tag] = (child.text or "").strip()
+                    if record:
+                        records.append(record)
+            if not records:
+                record = {
+                    elem.tag.split("}")[-1]: (elem.text or "").strip()
+                    for elem in root.iter()
+                    if elem.text and elem.text.strip()
+                }
+                if record:
+                    records.append(record)
+            return records
+{% elif source_format == "csv" %}
+            stream = io.StringIO(text)
+            reader = csv.DictReader(stream)
+            return [dict(row) for row in reader]
+{% else %}
+            msg = f"Unsupported source format: {{ source_format }}"
+            raise ValueError(msg)
+{% endif %}
+        except Exception as exc:
+            raise DiscoveryError(
+                DISC_PARSE_FAILED,
+                "Failed to parse raw input",
+                details={"error": str(exc)},
+            ) from exc
+
+    def _get_source_value(
+        self,
+        record: dict[str, object],
+        source_field: str,
+    ) -> object | None:
+        """Read a source field, optionally following source_path."""
+        if source_field in record:
+            return record[source_field]
+        source_path = self._SOURCE_PATHS.get(source_field)
+        if not source_path:
+            return None
+        current: object = record
+        for part in source_path.split("."):
+            if not isinstance(current, dict) or part not in current:
+                return None
+            current = current[part]
+        return current
+
+    def _route_target_path(
+        self,
+        mapped: dict[str, object],
+        target_field: str,
+        value: object,
+    ) -> None:
+        """Place value on the Claim-shaped mapped dict per entity routing rules."""
+        if target_field.startswith("policy_snapshot."):
+            return
+        if target_field.startswith("claim.loss_location."):
+            part = target_field.split(".", 2)[2]
+            location = mapped.setdefault("loss_location", {})
+            if isinstance(location, dict):
+                location[part] = value
+            return
+        if target_field.startswith("claim."):
+            mapped[target_field[len("claim.") :]] = value
+            return
+        if target_field.startswith("exposure."):
+            field = target_field[len("exposure.") :]
+            exposures = mapped.setdefault("exposures", [{}])
+            if exposures and isinstance(exposures[0], dict):
+                exposures[0][field] = value
+            return
+        if target_field.startswith("claimant."):
+            field = target_field[len("claimant.") :]
+            claimants = mapped.setdefault("claimants", [{}])
+            if claimants and isinstance(claimants[0], dict):
+                claimants[0][field] = value
+            return
+        if target_field.startswith("transaction."):
+            field = target_field[len("transaction.") :]
+            transactions = mapped.setdefault("transactions", [{}])
+            if transactions and isinstance(transactions[0], dict):
+                transactions[0][field] = value
+            return
+        mapped[target_field] = value
+
+    def _assemble_entities(self, mapped: dict[str, object]) -> None:
+        """Ensure child entity lists exist on the mapped claim dict."""
+        mapped.setdefault("exposures", [])
+        mapped.setdefault("claimants", [])
+        mapped.setdefault("transactions", [])
+
+    def _apply_required_defaults(self, mapped: dict[str, object]) -> None:
+        """AUTO-GENERATED defaults for unmapped required fields."""
+        now = datetime.now(timezone.utc)
+        mapped.setdefault("source_system", "{{ client_name }}")
+        mapped.setdefault("loss_description", "Unknown loss")
+        mapped.setdefault("loss_cause", LossCause.OTHER)
+        mapped.setdefault("line_of_business", LineOfBusiness.PERSONAL_AUTO)
+        mapped.setdefault(
+            "loss_location",
+            {
+                "street_1": "1 Main St",
+                "city": "Unknown",
+                "state": "XX",
+                "postal_code": "00000",
+                "country": "US",
+            },
+        )
+        mapped.setdefault("policy_effective_date", datetime(2024, 1, 1, tzinfo=timezone.utc))
+        mapped.setdefault("policy_expiration_date", datetime(2025, 1, 1, tzinfo=timezone.utc))
+        mapped.setdefault("created_at", now)
+        mapped.setdefault("updated_at", now)
+        mapped.setdefault("status", ClaimStatus.OPEN)
+        mapped.setdefault("reported_date", now)
+        mapped.setdefault("claim_number", mapped.get("claim_id", "UNKNOWN"))
+        mapped.setdefault("policy_number", "UNKNOWN")
+        mapped.setdefault("total_incurred", Decimal("0"))
+        mapped.setdefault("total_paid", Decimal("0"))
+        mapped.setdefault("total_reserved", Decimal("0"))
+        mapped.setdefault("deductible", Decimal("0"))
+
+    def map_record(self, raw_record: dict[str, object]) -> dict[str, object]:
+        """Map a raw record to universal schema field names."""
+        mapped: dict[str, object] = {}
+        try:
+            for source_field, target_field in self.FIELD_MAPPINGS.items():
+                raw_value = self._get_source_value(raw_record, source_field)
+                if raw_value is None and source_field not in raw_record:
+                    logger.warning(
+                        "Missing source field %s on record",
+                        source_field,
+                    )
+                    continue
+                value: object = raw_value
+                if source_field in self.TRANSFORMS:
+                    method_name = self.TRANSFORMS[source_field]
+                    method = getattr(self, method_name)
+                    if method_name.startswith("_transform_merge_"):
+                        merge_result = method(raw_record)
+                        if isinstance(merge_result, dict):
+                            for merge_target, merge_value in merge_result.items():
+                                self._route_target_path(mapped, str(merge_target), merge_value)
+                        continue
+                    transformed = method(value)
+                    if isinstance(transformed, dict):
+                        for split_target, split_value in transformed.items():
+                            self._route_target_path(mapped, str(split_target), split_value)
+                        continue
+                    value = transformed
+                self._route_target_path(mapped, target_field, value)
+            self._assemble_entities(mapped)
+            self._apply_required_defaults(mapped)
+            mapped["raw_data"] = dict(raw_record)
+            return mapped
+        except MappingError:
+            raise
+        except Exception as exc:
+            raise MappingError(
+                MAP_MATCH_FAILED,
+                "Failed to map record",
+                details={"error": str(exc)},
+            ) from exc
+
+    def _coerce_enums(self, mapped: dict[str, object]) -> None:
+        """Coerce string values to StrEnum instances for strict validation."""
+        status = mapped.get("status")
+        if isinstance(status, str):
+            mapped["status"] = ClaimStatus(status)
+        loss_cause = mapped.get("loss_cause")
+        if isinstance(loss_cause, str):
+            mapped["loss_cause"] = LossCause(loss_cause)
+        lob = mapped.get("line_of_business")
+        if isinstance(lob, str):
+            mapped["line_of_business"] = LineOfBusiness(lob)
+
+    def validate_record(
+        self,
+        mapped_record: dict[str, object],
+    ) -> tuple[Claim, list[ValidationWarning]]:
+        """Validate mapped record and return claim plus consistency warnings."""
+        try:
+            self._coerce_enums(mapped_record)
+            claim = Claim.model_validate(mapped_record)
+        except Exception as exc:
+            raise SchemaValidationError(
+                error_code="SCHEMA_VALIDATION_FAILED",
+                message="Mapped record failed universal schema validation",
+                details={"error": str(exc)},
+            ) from exc
+        warnings = validate_claim_consistency(claim)
+        return claim, warnings
+
+{% for transform in needed_transforms %}
+{% if transform.transform_type == "date_format" %}
+{% with method_name=transform.method_name, strptime_format=transform.strptime_format %}
+{% include "transforms/date_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% elif transform.transform_type == "currency_parse" %}
+{% with method_name=transform.method_name %}
+{% include "transforms/currency_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% elif transform.transform_type == "boolean_parse" %}
+{% with method_name=transform.method_name, true_values=transform.true_values, false_values=transform.false_values %}
+{% include "transforms/boolean_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% elif transform.transform_type == "enum_map" %}
+{% with method_name=transform.method_name, enum_map=transform.enum_map, target_enum_values=transform.target_enum_values %}
+{% include "transforms/enum_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% elif transform.transform_type == "type_cast" %}
+{% with method_name=transform.method_name, target_type=transform.target_type, return_annotation=transform.return_annotation %}
+{% include "transforms/type_cast_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% elif transform.transform_type == "split_field" %}
+{% with method_name=transform.method_name, delimiter=transform.delimiter, maxsplit=transform.maxsplit, targets=transform.targets %}
+{% include "transforms/split_field_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% elif transform.transform_type == "merge_fields" %}
+{% with method_name=transform.method_name, target_field=transform.target_field, field_map=transform.field_map %}
+{% include "transforms/merge_fields_transform.py.j2" %}
+{% endwith %}
+{{ "\n" }}
+{% endif %}
+{% endfor %}
