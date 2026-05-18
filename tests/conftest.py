@@ -311,3 +311,150 @@ def mock_field_analyzer() -> object:
             ]
 
     return _StubAnalyzer()
+
+
+@pytest.fixture
+def tmp_knowledge_base(tmp_path: object) -> object:
+    """Knowledge base rooted at a temporary directory."""
+    from pathlib import Path
+
+    from src.mapping.knowledge_base import MappingKnowledgeBase
+
+    return MappingKnowledgeBase(Path(str(tmp_path)) / "kb")
+
+
+@pytest.fixture
+def guidewire_profile() -> object:
+    """Guidewire-style ClientProfile for mapping tests."""
+    from src.discovery.profile import ClientProfile, FieldInfo
+
+    fields = [
+        FieldInfo(source_name="claimId", inferred_type="string", sample_values=["GW-001"]),
+        FieldInfo(source_name="lossDate", inferred_type="date", sample_values=["2024-01-15"]),
+        FieldInfo(
+            source_name="claimStatus",
+            inferred_type="string",
+            sample_values=["open"],
+        ),
+        FieldInfo(
+            source_name="reportedDate",
+            inferred_type="date",
+            sample_values=["2024-01-16"],
+        ),
+        FieldInfo(source_name="claimNumber", inferred_type="string", sample_values=["2024-1"]),
+        FieldInfo(
+            source_name="lossDescription",
+            inferred_type="string",
+            sample_values=["Collision"],
+        ),
+        FieldInfo(source_name="policyNumber", inferred_type="string", sample_values=["POL-1"]),
+        FieldInfo(
+            source_name="totalIncurred",
+            inferred_type="decimal",
+            sample_values=["10000"],
+        ),
+        FieldInfo(source_name="assignedGroup", inferred_type="string", sample_values=["TeamA"]),
+    ]
+    return ClientProfile(
+        client_name="guidewire_carrier",
+        source_format="json",
+        detected_encoding="utf-8",
+        total_records_sampled=3,
+        total_fields_detected=len(fields),
+        fields=fields,
+        created_at=datetime.now(UTC),
+    )
+
+
+@pytest.fixture
+def legacy_profile() -> object:
+    """Legacy mainframe-style ClientProfile."""
+    from src.discovery.profile import ClientProfile, FieldInfo
+
+    fields = [
+        FieldInfo(source_name="CLM_NBR", inferred_type="string", sample_values=["1001"]),
+        FieldInfo(source_name="DT_OF_LSS", inferred_type="string", sample_values=["20240115"]),
+        FieldInfo(source_name="CLMNT_LST_NM", inferred_type="string", sample_values=["SMITH"]),
+        FieldInfo(source_name="STATUS", inferred_type="string", sample_values=["OPEN"]),
+        FieldInfo(source_name="RSV_AMT", inferred_type="string", sample_values=["5000"]),
+    ]
+    return ClientProfile(
+        client_name="legacy_carrier",
+        source_format="csv",
+        detected_encoding="utf-8",
+        total_records_sampled=4,
+        total_fields_detected=len(fields),
+        fields=fields,
+        created_at=datetime.now(UTC),
+    )
+
+
+@pytest.fixture
+def acord_profile() -> object:
+    """ACORD-style ClientProfile."""
+    from src.discovery.profile import ClientProfile, FieldInfo
+
+    fields = [
+        FieldInfo(source_name="ClaimId", inferred_type="string", sample_values=["C1"]),
+        FieldInfo(source_name="LossDt", inferred_type="string", sample_values=["2024-01-01"]),
+        FieldInfo(source_name="ReportedDt", inferred_type="string", sample_values=["2024-01-02"]),
+        FieldInfo(source_name="ClaimStatusCd", inferred_type="string", sample_values=["OPN"]),
+        FieldInfo(source_name="PolicyNumber", inferred_type="string", sample_values=["P-1"]),
+    ]
+    return ClientProfile(
+        client_name="acord_carrier",
+        source_format="xml",
+        detected_encoding="utf-8",
+        total_records_sampled=2,
+        total_fields_detected=len(fields),
+        fields=fields,
+        created_at=datetime.now(UTC),
+    )
+
+
+@pytest.fixture
+def mock_semantic_matcher() -> object:
+    """Semantic matcher stub for integration tests."""
+    from src.mapping.config import FieldMapping, MatchType
+    from src.mapping.semantic_matcher import SemanticMatchOutcome, SemanticMatcher
+
+    class _StubSemantic(SemanticMatcher):
+        def __init__(self) -> None:
+            pass
+
+        async def match(self, unmatched_fields, already_mapped_targets, **kwargs):  # type: ignore[no-untyped-def]
+            del already_mapped_targets, kwargs
+            mappings = []
+            gaps = []
+            legacy_map = {
+                "CLMNT_LST_NM": ("claimant.last_name", 0.75),
+                "DT_OF_LSS": ("claim.loss_date", 0.8),
+            }
+            for field in unmatched_fields:
+                entry = legacy_map.get(field.source_name)
+                if entry:
+                    target, conf = entry
+                    mappings.append(
+                        FieldMapping(
+                            source_field=field.source_name,
+                            source_path=field.nesting_path,
+                            target_field=target,
+                            match_type=MatchType.SEMANTIC,
+                            confidence=conf,
+                            reasoning="stub semantic match",
+                        )
+                    )
+                else:
+                    from src.mapping.config import GapInfo, GapType
+
+                    gaps.append(
+                        GapInfo(
+                            field_name=field.source_name,
+                            gap_type=GapType.UNMAPPED_SOURCE,
+                            severity="warning",
+                            description="no stub match",
+                        )
+                    )
+            return SemanticMatchOutcome(mappings=mappings, gaps=gaps)
+
+    return _StubSemantic()

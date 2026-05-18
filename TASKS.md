@@ -67,7 +67,7 @@ Done means: feed any of the three sample formats, get back a valid ClientProfile
 
 ## Phase 3: Mapping Engine
 **Spec:** docs/PHASE_3_SPEC.md
-**Status:** [ ] Not started
+**Status:** [x] Complete
 
 What gets built:
 - Semantic matcher with LLM and insurance domain context
