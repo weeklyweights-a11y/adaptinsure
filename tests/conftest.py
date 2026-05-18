@@ -458,3 +458,123 @@ def mock_semantic_matcher() -> object:
             return SemanticMatchOutcome(mappings=mappings, gaps=gaps)
 
     return _StubSemantic()
+
+
+@pytest.fixture
+def fixed_generation_timestamp() -> datetime:
+    """Fixed UTC timestamp for deterministic template rendering."""
+    return datetime(2024, 6, 1, 12, 0, 0, tzinfo=UTC)
+
+
+@pytest.fixture
+def test_mapping_config(fixed_generation_timestamp: datetime) -> object:
+    """Realistic MappingConfig for generator template tests."""
+    from src.mapping.config import (
+        ConfidenceSummary,
+        FieldMapping,
+        FieldTransform,
+        GapInfo,
+        GapType,
+        MappingConfig,
+        MatchType,
+        TransformType,
+    )
+
+    date_transform = FieldTransform(
+        transform_type=TransformType.DATE_FORMAT,
+        source_format="YYYY-MM-DD",
+        target_format="ISO 8601",
+    )
+    currency_transform = FieldTransform(
+        transform_type=TransformType.CURRENCY_PARSE,
+        source_format="$#,###.##",
+        target_format="Decimal",
+    )
+    boolean_transform = FieldTransform(
+        transform_type=TransformType.BOOLEAN_PARSE,
+        parameters={
+            "true_values": ["true", "yes", "y", "1"],
+            "false_values": ["false", "no", "n", "0"],
+        },
+    )
+    return MappingConfig(
+        client_name="Test Carrier",
+        source_format="json",
+        schema_version="1.0.0",
+        field_mappings=[
+            FieldMapping(
+                source_field="lossDate",
+                target_field="claim.loss_date",
+                match_type=MatchType.DIRECT,
+                confidence=0.85,
+                reasoning="direct",
+                transform=date_transform,
+            ),
+            FieldMapping(
+                source_field="totalPaid",
+                target_field="claim.total_paid",
+                match_type=MatchType.DIRECT,
+                confidence=0.9,
+                reasoning="direct",
+                transform=currency_transform,
+            ),
+            FieldMapping(
+                source_field="excess_amount",
+                target_field="claim.deductible",
+                match_type=MatchType.SEMANTIC,
+                confidence=0.8,
+                reasoning="semantic",
+            ),
+            FieldMapping(
+                source_field="full_name",
+                target_field="claimant.first_name",
+                match_type=MatchType.COMPUTED,
+                confidence=0.75,
+                reasoning="split",
+                transform=FieldTransform(
+                    transform_type=TransformType.SPLIT_FIELD,
+                    parameters={"targets": ["claimant.first_name", "claimant.last_name"]},
+                ),
+            ),
+            FieldMapping(
+                source_field="claimId",
+                target_field="claim.claim_id",
+                match_type=MatchType.DIRECT,
+                confidence=0.95,
+                reasoning="direct",
+            ),
+            FieldMapping(
+                source_field="litigationFlag",
+                target_field="claim.litigation_flag",
+                match_type=MatchType.DIRECT,
+                confidence=0.88,
+                reasoning="direct",
+                transform=boolean_transform,
+            ),
+        ],
+        transforms=[date_transform, currency_transform, boolean_transform],
+        gaps=[
+            GapInfo(
+                field_name="custom_field",
+                gap_type=GapType.UNMAPPED_SOURCE,
+                severity="warning",
+                description="unmapped",
+            ),
+            GapInfo(
+                field_name="claim.unknown_field",
+                gap_type=GapType.MISSING_OPTIONAL,
+                severity="info",
+                description="optional gap",
+            ),
+        ],
+        confidence_summary=ConfidenceSummary(
+            total_fields=6,
+            mapped_fields=6,
+            unmapped_fields=0,
+            high_confidence_count=5,
+            medium_confidence_count=1,
+            low_confidence_count=0,
+            average_confidence=0.85,
+        ),
+        created_at=fixed_generation_timestamp,
+    )
