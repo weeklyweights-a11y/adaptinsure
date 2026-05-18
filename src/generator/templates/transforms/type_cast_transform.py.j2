@@ -1,0 +1,16 @@
+    def {{ method_name }}(self, value: object) -> {{ return_annotation }} | None:
+        """Cast string value to {{ target_type }}."""
+        if value is None or value == "":
+            return None
+        try:
+            text = str(value).strip()
+{% if target_type == "int" %}
+            return int(text)
+{% elif target_type == "Decimal" %}
+            return Decimal(text)
+{% else %}
+            return float(text)
+{% endif %}
+        except (ValueError, TypeError, ArithmeticError) as exc:
+            logger.warning("Type cast transform failed for value %r: %s", value, exc)
+            return None

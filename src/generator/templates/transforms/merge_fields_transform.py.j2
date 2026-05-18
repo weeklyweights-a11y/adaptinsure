@@ -1,0 +1,16 @@
+    def {{ method_name }}(self, record: dict[str, object]) -> dict[str, object]:
+        """Merge multiple source fields into target paths."""
+        result: dict[str, object] = {}
+        try:
+            merged: dict[str, object] = {
+{% for key, source in field_map.items() %}
+                "{{ key }}": record.get("{{ source }}"),
+{% endfor %}
+            }
+            base = "{{ target_field }}"
+            for part_key, part_val in merged.items():
+                result[f"{base}.{part_key}"] = part_val
+            return result
+        except (TypeError, AttributeError) as exc:
+            logger.warning("Merge fields transform failed: %s", exc)
+            return result

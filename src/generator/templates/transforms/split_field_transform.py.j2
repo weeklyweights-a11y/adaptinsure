@@ -1,0 +1,16 @@
+    def {{ method_name }}(self, value: object) -> dict[str, object]:
+        """Split one source field into multiple target paths."""
+        result: dict[str, object] = {}
+        if value is None or value == "":
+            return result
+        try:
+            text = str(value).strip()
+            parts = text.split("{{ delimiter }}", {{ maxsplit }})
+            targets = {{ targets | tojson }}
+            for index, target in enumerate(targets):
+                if index < len(parts):
+                    result[target] = parts[index].strip()
+            return result
+        except (TypeError, AttributeError) as exc:
+            logger.warning("Split field transform failed for value %r: %s", value, exc)
+            return result

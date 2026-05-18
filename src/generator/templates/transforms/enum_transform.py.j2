@@ -1,0 +1,22 @@
+    def {{ method_name }}(self, value: object) -> str | None:
+        """Map source enum value to universal schema enum value."""
+        if value is None or value == "":
+            return None
+        try:
+            text = str(value).strip()
+            enum_map = {{ enum_map | tojson }}
+            if text in enum_map:
+                return enum_map[text]
+            lower = text.lower()
+            for source_key, target_val in enum_map.items():
+                if source_key.lower() == lower:
+                    return target_val
+            target_values = {{ target_enum_values | tojson }}
+            for target_val in target_values:
+                if str(target_val).lower() == lower:
+                    return target_val
+            logger.warning("Enum transform unknown value: %r", value)
+            return text
+        except (TypeError, AttributeError) as exc:
+            logger.warning("Enum transform failed for value %r: %s", value, exc)
+            return None

@@ -1,0 +1,17 @@
+    def {{ method_name }}(self, value: object) -> bool | None:
+        """Parse boolean from configured true/false value lists."""
+        if value is None or value == "":
+            return None
+        try:
+            text = str(value).strip().lower()
+            true_values = {{ true_values | tojson }}
+            false_values = {{ false_values | tojson }}
+            if text in true_values:
+                return True
+            if text in false_values:
+                return False
+            logger.warning("Boolean transform unknown value: %r", value)
+            return None
+        except (TypeError, AttributeError) as exc:
+            logger.warning("Boolean transform failed for value %r: %s", value, exc)
+            return None

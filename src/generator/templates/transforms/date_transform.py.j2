@@ -1,0 +1,13 @@
+    def {{ method_name }}(self, value: object) -> datetime | None:
+        """Parse date from source format to timezone-aware datetime."""
+        if value is None or value == "":
+            return None
+        try:
+            text = str(value).strip()
+            parsed = datetime.strptime(text, "{{ strptime_format }}")
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            return parsed
+        except (ValueError, TypeError) as exc:
+            logger.warning("Date transform failed for value %r: %s", value, exc)
+            return None
