@@ -26,6 +26,11 @@ class Settings(BaseSettings):
         default="gemini-2.5-flash",
         validation_alias="GEMINI_MODEL_DISCOVERY",
     )
+    gemini_model_mapping: str = Field(
+        default="gemini-2.5-pro",
+        validation_alias="GEMINI_MODEL_MAPPING",
+    )
+    knowledge_base_dir: Path = Field(default=Path("data/knowledge_base"))
     log_level: str = "INFO"
     generated_adapters_dir: Path = Path("generated")
 
