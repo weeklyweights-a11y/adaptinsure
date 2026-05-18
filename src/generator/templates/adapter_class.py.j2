@@ -98,16 +98,43 @@ class {{ class_name }}(BaseAdapter):
 {% elif source_format == "xml" %}
             root = etree.fromstring(text.encode("utf-8"))
             records: list[dict[str, object]] = []
+            def _flatten_leaves(node: dict[str, object], into: dict[str, object]) -> None:
+                for key, val in node.items():
+                    if isinstance(val, dict):
+                        _flatten_leaves(val, into)
+                    else:
+                        into[key] = val
+
+            record_tags = frozenset({"Claim", "ClaimsOccurrence"})
             for element in root.iter():
-                if len(element) == 0 and element.text:
+                local = element.tag.split("}")[-1] if "}" in element.tag else element.tag
+                if local not in record_tags:
                     continue
-                if element.tag.endswith("Claim") or element.tag == "Claim":
-                    record: dict[str, object] = {}
-                    for child in element:
-                        tag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
+                record: dict[str, object] = {}
+                for child in element:
+                    tag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
+                    if len(child):
+                        nested: dict[str, object] = {}
+                        for sub in child:
+                            sub_tag = sub.tag.split("}")[-1] if "}" in sub.tag else sub.tag
+                            val = (sub.text or "").strip()
+                            if sub.attrib:
+                                for attr_key, attr_val in sub.attrib.items():
+                                    attr_name = attr_key.split("}")[-1] if "}" in attr_key else attr_key
+                                    nested[f"{sub_tag}@{attr_name}"] = attr_val
+                                    record[f"{sub_tag}@{attr_name}"] = attr_val
+                            nested[sub_tag] = val
+                            record[sub_tag] = val
+                        _flatten_leaves(nested, record)
+                        record[tag] = nested
+                    else:
+                        if child.attrib:
+                            for attr_key, attr_val in child.attrib.items():
+                                attr_name = attr_key.split("}")[-1] if "}" in attr_key else attr_key
+                                record[f"{tag}@{attr_name}"] = attr_val
                         record[tag] = (child.text or "").strip()
-                    if record:
-                        records.append(record)
+                if record:
+                    records.append(record)
             if not records:
                 record = {
                     elem.tag.split("}")[-1]: (elem.text or "").strip()
