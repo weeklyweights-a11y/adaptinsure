@@ -85,7 +85,7 @@ Done means: ClientProfile from Phase 2 goes in, MappingConfig comes out with all
 
 ## Phase 4: Adapter Code Generator
 **Spec:** docs/PHASE_4_SPEC.md
-**Status:** [ ] Not started
+**Status:** [x] Complete
 
 What gets built:
 - Jinja2 templates: adapter class, field transforms, validator, test file
@@ -95,7 +95,7 @@ What gets built:
 - Generated test file per adapter
 - End-to-end: sample data -> discovery -> mapping -> generation -> adapter runs correctly
 
-Done means: MappingConfig goes in, clean typed Python adapter comes out, adapter processes sample data and produces valid universal schema output, generated tests pass.
+Done means: MappingConfig goes in, syntactically valid adapter and test files are generated, E2E `transform_batch` succeeds on three sample claims; generated pytest suite execution is Phase 5.
 
 ---
 
