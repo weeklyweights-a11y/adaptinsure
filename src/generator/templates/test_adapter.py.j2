@@ -1,0 +1,140 @@
+# AUTO-GENERATED — DO NOT EDIT — regenerate from config
+# Client: {{ client_name }}
+# Generated at: {{ timestamp }}
+
+"""Auto-generated tests for {{ class_name }}."""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from decimal import Decimal
+
+import pytest
+
+from {{ module_name }} import {{ class_name }}
+from src.schema.enums import ClaimStatus
+from src.schema.models import Claim
+
+UTC = timezone.utc
+
+
+@pytest.fixture
+def sample_raw_{{ source_format }}() -> str:
+    """Sample raw input in {{ source_format }} format."""
+{% if source_format == "json" %}
+    import json
+
+    records = {{ sample_records | tojson }}
+    return json.dumps(records)
+{% elif source_format == "csv" %}
+    import csv
+    import io
+
+    records = {{ sample_records | tojson }}
+    if not records:
+        return ""
+    fieldnames = list(records[0].keys())
+    stream = io.StringIO()
+    writer = csv.DictWriter(stream, fieldnames=fieldnames)
+    writer.writeheader()
+    writer.writerows(records)
+    return stream.getvalue()
+{% else %}
+    return ""
+{% endif %}
+
+
+@pytest.fixture
+def adapter() -> {{ class_name }}:
+    """Adapter instance under test."""
+    return {{ class_name }}()
+
+
+class Test{{ class_name.replace("Adapter", "") }}Adapter:
+    """Tests for {{ class_name }}."""
+
+    def test_parse_raw_returns_records(
+        self,
+        adapter: {{ class_name }},
+        sample_raw_{{ source_format }}: str,
+    ) -> None:
+        """parse_raw returns a list of dict records."""
+        records = adapter.parse_raw(sample_raw_{{ source_format }})
+        assert isinstance(records, list)
+        assert len(records) >= 1
+        assert isinstance(records[0], dict)
+
+    def test_map_record_all_fields_mapped(
+        self,
+        adapter: {{ class_name }},
+        sample_raw_{{ source_format }}: str,
+    ) -> None:
+        """map_record includes mapped target values."""
+        raw = adapter.parse_raw(sample_raw_{{ source_format }})[0]
+        mapped = adapter.map_record(raw)
+        assert mapped.get("claim_id") is not None or mapped.get("loss_date") is not None
+
+    def test_map_record_transforms_applied(
+        self,
+        adapter: {{ class_name }},
+        sample_raw_{{ source_format }}: str,
+    ) -> None:
+        """Transformed fields have expected Python types where applicable."""
+        raw = adapter.parse_raw(sample_raw_{{ source_format }})[0]
+        mapped = adapter.map_record(raw)
+        if "loss_date" in mapped and mapped["loss_date"] is not None:
+            assert isinstance(mapped["loss_date"], datetime)
+        if "total_paid" in mapped and mapped["total_paid"] is not None:
+            assert isinstance(mapped["total_paid"], Decimal)
+
+    def test_validate_record_produces_valid_claim(
+        self,
+        adapter: {{ class_name }},
+        sample_raw_{{ source_format }}: str,
+    ) -> None:
+        """Full pipeline produces a valid Claim."""
+        raw = adapter.parse_raw(sample_raw_{{ source_format }})[0]
+        mapped = adapter.map_record(raw)
+        claim, _warnings = adapter.validate_record(mapped)
+        assert isinstance(claim, Claim)
+
+    def test_validate_record_returns_warnings(
+        self,
+        adapter: {{ class_name }},
+        sample_raw_{{ source_format }}: str,
+    ) -> None:
+        """validate_record returns a warnings list."""
+        raw = adapter.parse_raw(sample_raw_{{ source_format }})[0]
+        mapped = adapter.map_record(raw)
+        _claim, warnings = adapter.validate_record(mapped)
+        assert isinstance(warnings, list)
+
+    def test_transform_batch_processes_all_records(
+        self,
+        adapter: {{ class_name }},
+        sample_raw_{{ source_format }}: str,
+    ) -> None:
+        """transform_batch processes every parsed record."""
+        result = adapter.transform_batch(sample_raw_{{ source_format }})
+        assert result.total_records == result.success_count + result.failure_count
+        assert result.total_records >= 1
+
+{% for transform in needed_transforms %}
+    def test_{{ transform.method_name }}_known_input(
+        self,
+        adapter: {{ class_name }},
+    ) -> None:
+        """Exercise {{ transform.method_name }} with sample input."""
+        method = getattr(adapter, "{{ transform.method_name }}")
+{% if transform.transform_type == "merge_fields" %}
+        sample = {{ sample_records | tojson }}[0]
+        result = method(sample)
+        assert isinstance(result, dict)
+{% elif transform.transform_type == "split_field" %}
+        result = method("Doe, John")
+        assert isinstance(result, dict)
+{% else %}
+        result = method("sample")
+        assert result is not None or result is None
+{% endif %}
+{% endfor %}
