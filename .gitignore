@@ -13,3 +13,4 @@ build/
 
 generated/*
 !generated/.gitkeep
+data/knowledge_base/*.json
