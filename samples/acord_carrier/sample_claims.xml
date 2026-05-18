@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Heritage National Group ACORD export -->
+<ClaimsSvcRq xmlns="http://www.ACORD.org/standards/PC_Surety/ACORD1/xml/Claims">
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0001</ClaimNumber>
+        <LossDt>2024-03-15</LossDt>
+        <ReportedDt>2024-03-16</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 1</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>101 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00001</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00001</CheckNumber>
+        <PayeeName>Payee 1</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>101 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0002</ClaimNumber>
+        <LossDt>2024-03-16</LossDt>
+        <ReportedDt>2024-03-17</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 2</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>102 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00002</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00002</CheckNumber>
+        <PayeeName>Payee 2</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>102 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0003</ClaimNumber>
+        <LossDt>2024-03-17</LossDt>
+        <ReportedDt>2024-03-18</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 3</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>103 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00003</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00003</CheckNumber>
+        <PayeeName>Payee 3</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>103 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0004</ClaimNumber>
+        <LossDt>2024-03-18</LossDt>
+        <ReportedDt>2024-03-19</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 4</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>104 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00004</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">$1,234.56</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00004</CheckNumber>
+        <PayeeName>Payee 4</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>104 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0005</ClaimNumber>
+        <LossDt>2024-03-19</LossDt>
+        <ReportedDt>2024-03-20</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 5</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>105 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00005</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00005</CheckNumber>
+        <PayeeName>Payee 5</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>105 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0006</ClaimNumber>
+        <LossDt>2024-03-20</LossDt>
+        <ReportedDt>2024-03-21</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 6</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>106 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00006</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00006</CheckNumber>
+        <PayeeName>Payee 6</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>106 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0007</ClaimNumber>
+        <LossDt>2024-03-21</LossDt>
+        <ReportedDt>2024-03-22</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 7</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>107 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00007</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00007</CheckNumber>
+        <PayeeName>Payee 7</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>107 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0008</ClaimNumber>
+        <LossDt>2024-03-22</LossDt>
+        <ReportedDt>2024-03-23</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 8</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>108 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00008</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">$1,234.56</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00008</CheckNumber>
+        <PayeeName>Payee 8</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>108 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0009</ClaimNumber>
+        <LossDt>2024-03-23</LossDt>
+        <ReportedDt>2024-03-24</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 9</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>109 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00009</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00009</CheckNumber>
+        <PayeeName>Payee 9</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>109 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0010</ClaimNumber>
+        <LossDt>2024-03-24</LossDt>
+        <ReportedDt>2024-03-25</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 10</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>110 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00010</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00010</CheckNumber>
+        <PayeeName>Payee 10</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>110 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0011</ClaimNumber>
+        <LossDt>2024-03-25</LossDt>
+        <ReportedDt>2024-03-26</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 11</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>111 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00011</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">123456</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00011</CheckNumber>
+        <PayeeName>Payee 11</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>111 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+        <InternalRefNum>INT-REF-11</InternalRefNum>
+        <HandlerTeam>Team Alpha</HandlerTeam>
+    </ClaimsOccurrence>
+    <ClaimsOccurrence>
+      <ClaimsOccurrenceInfo>
+        <ClaimNumber>ACORD-0012</ClaimNumber>
+        <LossDt>2024-03-26</LossDt>
+        <ReportedDt>2024-03-27</ReportedDt>
+        <ClaimStatusCd>open</ClaimStatusCd>
+        <LOBCd>PA</LOBCd>
+        <LossDesc>ACORD loss 12</LossDesc>
+        <CatastropheCd></CatastropheCd>
+        <Addr1>112 Market St</Addr1>
+        <City>Columbus</City>
+        <StateProvCd>OH</StateProvCd>
+        <PostalCode>43215</PostalCode>
+      </ClaimsOccurrenceInfo>
+      <Policy>
+        <PolicyNumber>POL-ACORD-00012</PolicyNumber>
+        <EffectiveDt>2024-01-01</EffectiveDt>
+        <ExpirationDt>2025-01-01</ExpirationDt>
+      </Policy>
+      <ClaimsPayment>
+        <PaymentAmt CurCd="USD">$1,234.56</PaymentAmt>
+        <PaymentDt>2024-03-20</PaymentDt>
+        <PaymentTypeCd>PAY</PaymentTypeCd>
+        <CheckNumber>CHK00012</CheckNumber>
+        <PayeeName>Payee 12</PayeeName>
+      </ClaimsPayment>
+      <LossLocation>
+        <Address>
+          <Addr1>112 Market St</Addr1>
+          <City>Columbus</City>
+          <StateProvCd>OH</StateProvCd>
+          <PostalCode>43215</PostalCode>
+        </Address>
+      </LossLocation>
+    </ClaimsOccurrence>
+</ClaimsSvcRq>
