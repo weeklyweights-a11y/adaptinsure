@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
 
 import pytest
 from pydantic import ValidationError
@@ -18,6 +19,11 @@ from src.mapping.config import (
     TransformType,
     collect_unique_transforms,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from src.discovery.profile import FieldInfo
 
 UTC = timezone.utc
 
@@ -588,8 +594,6 @@ class TestMappingKnowledgeBase:
     """MappingKnowledgeBase tests."""
 
     def test_store_and_lookup(self, tmp_path: "Path") -> None:
-        from pathlib import Path
-
         from src.mapping.knowledge_base import MappingKnowledgeBase
 
         kb = MappingKnowledgeBase(tmp_path)
@@ -655,7 +659,6 @@ class TestMappingEngine:
         tmp_knowledge_base: object,
         mock_semantic_matcher: object,
     ) -> None:
-        from src.discovery.profile import ClientProfile
         from src.llm.client import LLMClient
         from src.mapping.engine import MappingEngine
 
@@ -738,8 +741,6 @@ class TestMappingEngine:
         )
         profile = guidewire_profile  # type: ignore[assignment]
         fields = [f for f in profile.fields if f.source_name != "assignedGroup"]
-        from src.discovery.profile import ClientProfile
-
         trimmed = profile.model_copy(
             update={
                 "fields": fields,
@@ -776,7 +777,7 @@ class TestMappingEngine:
         tmp_knowledge_base: object,
         mock_semantic_matcher: object,
     ) -> None:
-        from src.discovery.profile import ClientProfile, FieldInfo
+        from src.discovery.profile import ClientProfile
         from src.exceptions import MappingError
         from src.llm.client import LLMClient
         from src.mapping.engine import MappingEngine
